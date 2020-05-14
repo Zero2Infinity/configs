@@ -81,7 +81,7 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 
 " NerdTree
 let g:netrw_browse_split=2
-""" let g:netrw_banner=0
+let g:netrw_banner=0
 let g:netrw_winsize=35
 let g:NERDTreeShowHidden=1
 let g:NERDTreeIgnore=['\.git$', '\.idea$', '\.vscode$', '\.history$']
