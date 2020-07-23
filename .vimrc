@@ -32,19 +32,20 @@ call vundle#begin()
 " alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'morhetz/gruvbox'
-Plugin 'preservim/nerdtree'
-Plugin 'git@github.com:kien/ctrlp.vim.git'
-Plugin 'git@github.com:rking/ag.vim.git'
-Plugin 'jremmen/vim-ripgrep'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'artur-shaik/vim-javacomplete2'
-Plugin 'mbbill/undotree'
-Plugin 'majutsushi/tagbar'
-Plugin 'Valloric/ListToggle'
-
+"" Custom plugins to closely match IDE functionalities
+Plugin 'VundleVim/Vundle.vim'                       " Vundle manager required (PluginInstall/PluginClean)
+Plugin 'morhetz/gruvbox'                            " Color Theme
+Plugin 'preservim/nerdtree'                         " File Explorer
+Plugin 'git@github.com:kien/ctrlp.vim.git'          " Ctrl + P to find file based on fuzzy search
+Plugin 'git@github.com:rking/ag.vim.git'            " 
+Plugin 'jremmen/vim-ripgrep'                        " Search word or pattern in entire project
+Plugin 'Valloric/YouCompleteMe'                     " Auto complete dialog 
+Plugin 'artur-shaik/vim-javacomplete2'              " Java specific auto complete features
+Plugin 'mbbill/undotree'                            " Keeps track of changes to individual file
+Plugin 'majutsushi/tagbar'                          " Class overview (variables, methods)
+Plugin 'Valloric/ListToggle'                        " QuickFix and List windows (toggle)
+Plugin 'tpope/vim-fugitive'                         " Git (status: stage, unstage, dv), merge file conflict
+Plugin 'vim-airline/vim-airline'                    " Git branch indiction at status bar
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -66,6 +67,9 @@ nnoremap <leader>pv :wincmd v<bar> :Ex<bar> :vertical resize 30<CR>
 nnoremap <leader>ps :Rg<SPACE>
 nnoremap <silent> <leader>+ :vertical resize +5<CR>
 nnoremap <silent> <leader>- :vertical resize -5<CR>
+nnoremap <leader>gs :G<CR>
+nnoremap <leader>gf :diffget //2<CR>
+nnoremap <leader>gj :diffget //3<CR>
 " Tab related shortcuts
 nnoremap <leader>1 1gt
 nnoremap <leader>2 2gt
@@ -104,7 +108,9 @@ let g:NERDTreeIgnore=['\.git$', '\.idea$', '\.vscode$', '\.history$']
 set autochdir
 let g:NERDTreeChDirMode=2
 nnoremap <silent> <leader>n :NERDTree .<CR>
-
+nnoremap nt :NERDTreeToggle<CR>
+" show NERDTree when you open VIM
+autocmd VimEnter * NERDTree
 " close vim if nerdtree is the last window
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -130,6 +136,6 @@ nnoremap <silent> <leader>to :TagbarOpenAutoClose<CR>
 nnoremap <silent> <leader>tt :TagbarToggle<CR>
 
 "" ListToggle
-let g:lt_location_list_toggle_map='<leader>l'
-let g:lt_quickfix_list_toggle_map='<leader>f'
+let g:lt_location_list_toggle_map='<leader>lt'
+let g:lt_quickfix_list_toggle_map='<leader>ft'
 let g:lt_height=10
