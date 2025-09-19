@@ -1,5 +1,11 @@
 -- VIM Global settings
 
+-- Make sure to setup `mapleader` and `maplocalleader` before
+-- loading lazy.nvim so that mappings are correct.
+vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+
+
 vim.g.deprecation_warnings = true       -- hide deprecation warnings
 vim.g.trouble_lualine = true            -- show the current documen symbols location from Trouble in lualine
 
@@ -24,7 +30,7 @@ opt.wrap = false                        -- disable line wrapping
 opt.cursorline = true                   -- highlight the current line
 
 opt.mouse = "r"                         -- help with copying + pasting text more easily
--- opt.mouse = "a"                      -- enable mouse mode (right-click)
+opt.mouse = "a"                      -- enable mouse mode (right-click)
 
 opt.smartcase = true                    -- don't ignore case with capitals
 opt.hlsearch = true                     -- highlight search
@@ -51,4 +57,5 @@ opt.backup = false                      -- enable backup before overwriting
 opt.writebackup = true                  -- enable backup before writing a file    
 opt.backupdir = "~/.config/nvim/backup" -- directory to store backup files
 opt.backupext = ".bak"                  -- set the extension for backup files
+
 
