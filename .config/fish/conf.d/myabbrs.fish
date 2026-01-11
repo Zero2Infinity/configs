@@ -3,8 +3,9 @@ abbr -a -- fish-reload 'source ~/.config/fish/config.fish'
 
 # Directory and Files
 abbr -a -- l 'eza'
-abbr -a -- ll 'eza -l'
-abbr -a -- lla 'eza -la'
+abbr -a -- lt 'eza -T -h'
+abbr -a -- ll 'eza -l -h'
+abbr -a -- lla 'eza -l -a -h'
 abbr -a -- .. 'cd ../..'
 abbr -a -- ... 'cd ../../..'
 abbr -a -- .... 'cd ../../../..'

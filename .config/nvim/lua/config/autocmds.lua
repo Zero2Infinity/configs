@@ -1,0 +1,10 @@
+-- Automatically run gofmt and goimports before saving a Go file
+--vim.api.nvim_create_autocmd("BufWritePre", {
+--    pattern = "*.go",
+--    callback = function()
+--        vim.cmd("silent! !goimports -w %")
+--        vim.cmd("silent! !gofmt -w %")
+--        vim.cmd("write!")
+--        vim.cmd("edit!")
+--    end,
+--})

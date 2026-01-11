@@ -46,14 +46,70 @@ return {
     -- telescope: fuzzy file finds
     {
         "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
+        dependencies = { 
+            "nvim-lua/plenary.nvim",
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" }
+        },
+        -- Use 'keys' for the best performance (lazy loading)
+        keys = {
+            { "<leader>ff", "<cmd>Telescope find_files<cr>", desc = "Find Files" },
+            { "<leader>fg", "<cmd>Telescope live_grep<cr>", desc = "Live Grep" },
+            { "<leader>fb", "<cmd>Telescope buffers<cr>", desc = "Find Buffers" },
+            { "<leader>fh", "<cmd>Telescope help_tags<cr>", desc = "Help Tags" },
+            { "<leader>fs", "<cmd>Telescope grep_string<cr>", desc = "Search String under cursor" },
+            { "<leader>fo", "<cmd>Telescope oldfiles<cr>", desc = "Recent Files" },
+        },
         config = function()
-            -- Basic keymap for finding files wiht telescope
-            vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, { desc = "Fuzzy find files" })
-        end
+            local ts = require("telescope")
+            local actions = require("telescope.actions")
+            local layout = require("telescope.actions.layout")
+
+            ts.setup({
+                defaults = {
+                    path_display = { "smart" },
+                    mappings = {
+                        i = {
+                            ["<C-k>"] = actions.move_selection_previous,
+                            ["<C-j>"] = actions.move_selection_next,
+                            ["<C-q>"] = actions.send_selected_to_qflist + require("telescope.actions").open_qflist,
+                            ["<M-l>"] = layout.cycle_layout_next, -- Press Alt + L to swap layouts
+                        },
+                    },
+                },
+            })
+
+            -- Load the fzf extension
+            ts.load_extension("fzf")
+        end,
     },
 
-
+    -- Neo-tree.nvim (the feature rich tree)
+    -- <CR> (Enter)	Open file in the current window (Buffer).
+    -- Ctrl-t	Open file in a new Neovim Tab.
+    -- Ctrl-v	Open file in a Vertical Split.
+    -- Ctrl-x	Open file in a Horizontal Split.
+    -- <Tab>	Open file in Preview mode (opens buffer but keeps focus in the tree).
+    {
+        "nvim-tree/nvim-tree.lua",
+        version = "*",
+        lazy = false,
+        dependencies = {
+          "nvim-tree/nvim-web-devicons",
+        },
+        keys = {
+            -- Set a keymap to toggle the tree
+            { "<leader>ee", "<cmd>NvimTreeToggle<cr>", desc = "Toggle File Explorer" },
+        }, 
+        config = function()
+            local nt = require("nvim-tree")
+            nt.setup({
+                view = {
+                    width = 30,
+                    side = "left",
+                },
+            })
+        end,
+    },
     
     -- add none-ls is an active community fork of null-ls
     {

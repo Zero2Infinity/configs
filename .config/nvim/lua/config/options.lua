@@ -14,7 +14,8 @@ vim.g.trouble_lualine = true            -- show the current documen symbols loca
 -- VIM Options
 local opt = vim.opt
 
-opt.autowrite = true                    -- Enable auto-write
+-- opt.autowrite = true                    -- Enable auto-write
+opt.autoread = true                     -- auto reload files that changed outside
 
 opt.number = true                       -- enable line number
 opt.relativenumber = true               -- enable relative line number
@@ -54,8 +55,9 @@ opt.wildmode = "longest:full,full"      -- command-line completion mode
 opt.swapfile = false                    -- disable creating swap file
 
 opt.backup = false                      -- enable backup before overwriting
-opt.writebackup = true                  -- enable backup before writing a file    
+opt.writebackup = false                  -- enable backup before writing a file    
 opt.backupdir = "~/.config/nvim/backup" -- directory to store backup files
 opt.backupext = ".bak"                  -- set the extension for backup files
+
 
 
