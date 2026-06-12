@@ -138,7 +138,7 @@ return {
                 gopls = {
                   gofumpt = true,
                   codelenses = {
-                      gc_details = ffalse,
+                      gc_details = false,
                       generate = true,
                       regenerate_cgo = true,
                       run_govulncheck = true,
@@ -175,7 +175,7 @@ return {
                 vim.diagnostic.config({ virtual_text = true })
 
                 -- prevent the built-in vim.lsp.completion autotrigger from selecting the first item
-                vim.opt.completeopt = { "menuone", "noselect", "popup", "preview", "noinsert", "longest" }
+                vim.opt.completeopt = { "menuone", "noselect", "popup", "preview"}
                 vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true, })
                 vim.keymap.set('i', '<C-space>', vim.lsp.completion.get, { desc = "Trigger autocompletion" })
 
@@ -183,8 +183,16 @@ return {
                 -- Keybindings for LSP functions
                 vim.api.nvim_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
                 vim.api.nvim_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+                vim.api.nvim_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+                vim.api.nvim_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+                -- Go back to return to your caller using the tag stack
+                vim.api.nvim_set_keymap('n', 'gb', '<cmd>tag<CR>', opts)
+
                 vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+
+                -- Rename symbol
                 vim.api.nvim_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+                -- Code actions (Quick fixes)
                 vim.api.nvim_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
                 vim.api.nvim_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
                 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
@@ -199,25 +207,51 @@ return {
         vim.lsp.enable('go')
     },
 
-    -- add more treesitter parsers
+    -- Add more treesitter parsers (Lazy.nvim format)
     {
         'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',  -- Ensure parsers are updated
+        build = ':TSUpdate',  -- Fix: Lazy uses 'build', Packer uses 'run'
         config = function()
-            require('nvim-treesitter.configs').setup {
-                ensure_installed = { "go", "python", "lua",  },  -- Ensure Go parser is installed
+            -- Fix: Use modern top-level setup for Neovim 0.12
+            require('nvim-treesitter').setup {
+                ensure_installed = { 
+                  "go", 
+                  "python",
+                  "lua",
+                  "vim",
+                  "vimdoc",
+                  "query",
+                },
                 highlight = {
-                    enable = true,  -- Enable highlighting
-                    additional_vim_regex_highlighting = false,  -- Disable Vim regex highlighting
+                    enable = true,
+                    additional_vim_regex_highlighting = false,
                 },
                 indent = {
-                   enable = true,  -- Enable indentation based on Treesitter
-                },
-                matchup = {
-                   enable = true, -- Enable matching for brackets
+                   enable = true,
                 },
             }
         end,
+    },
+
+    {
+      "RRethy/vim-illuminate",
+      event = { "BufReadPost", "BufNewFile" }, -- Forces it to load when you open a file
+      config = function()
+        require("illuminate").configure({
+          delay = 100, -- delay in milliseconds before highlighting
+          providers = {
+              "lsp",
+              "treesitter",
+              "regex",
+          },
+        })
+
+        local hl_opts = { bg = "NONE", underline = true, bold = true }
+        vim.api.nvim_set_hl(0, "IlluminatedWordText", hl_opts)
+        vim.api.nvim_set_hl(0, "IlluminatedWordRead", hl_opts)
+        vim.api.nvim_set_hl(0, "IlluminatedWordWrite", hl_opts)
+        
+      end,
     },
 
     -- or you can return new options to override all the defaults
@@ -253,6 +287,7 @@ return {
     },
 
     -- add mason managed lspconfig
-    { "mason-org/mason-lspconfig.nvim", config = function() end }
+    { "mason-org/mason-lspconfig.nvim", config = function() end },
 
 }
+
