@@ -5,7 +5,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
-
 vim.g.deprecation_warnings = true       -- hide deprecation warnings
 vim.g.trouble_lualine = true            -- show the current documen symbols location from Trouble in lualine
 
@@ -20,14 +19,17 @@ opt.autoread = true                     -- auto reload files that changed outsid
 opt.number = true                       -- enable line number
 opt.relativenumber = true               -- enable relative line number
 
-opt.colorcolumn = "80"                  -- set an 80 column border for good coding style
 opt.tabstop = 4                         -- number of columns occupied by a tab
 opt.shiftwidth = 4                      -- width of autoindents
 opt.softtabstop = 4                     -- see multiple spaces as tabstops so <BS> does the right thing
 opt.expandtab = true                    -- convert tabs to spaces
 opt.smartindent = true                  -- Automatically indent new lines
 
-opt.wrap = false                        -- disable line wrapping
+opt.linespace = 2                       -- Increase or decrease space b/w lines (value is in px)
+opt.colorcolumn = "80"                  -- set an 80 column border for good coding style
+opt.wrap = true                         -- disable line wrapping
+opt.linebreak = true                    -- wrap lines at a character in 'breakat' (like a space) rather than mid-word
+opt.list = false                        -- optional: prevent lists/whitespace symbols from breaking word wrap behavior
 opt.cursorline = true                   -- highlight the current line
 
 opt.mouse = "r"                         -- help with copying + pasting text more easily

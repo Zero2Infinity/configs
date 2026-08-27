@@ -214,23 +214,28 @@ return {
         config = function()
             -- Fix: Use modern top-level setup for Neovim 0.12
             require('nvim-treesitter').setup {
-                ensure_installed = { 
-                  "go", 
+                ensure_installed = {
+                  "go",
                   "python",
                   "lua",
                   "vim",
                   "vimdoc",
                   "query",
                 },
-                highlight = {
+                 indent = {
                     enable = true,
-                    additional_vim_regex_highlighting = false,
-                },
-                indent = {
-                   enable = true,
-                },
-            }
-        end,
+                 },
+             }
+
+            -- nvim-treesitter (main) no longer ships a highlight module, so treesitter
+            -- parsing works but highlighting never starts -> buffers fall back to the
+            -- legacy go.vim syntax. Start it explicitly per filetype.
+            vim.api.nvim_create_autocmd('FileType', {
+                callback = function()
+                    pcall(vim.treesitter.start)
+                end,
+            })
+         end,
     },
 
     {
@@ -288,6 +293,22 @@ return {
 
     -- add mason managed lspconfig
     { "mason-org/mason-lspconfig.nvim", config = function() end },
+
+    {
+      "sindrets/diffview.nvim",
+      cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+      keys = {
+        { "<leader>gd", "<cmd>DiffviewOpen<cr>", desc = "Open Diffview" },
+        { "<leader>gh", "<cmd>DiffviewFileHistory %<cr>", desc = "File History" },
+      },
+    },
+
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        main = "ibl",
+        opts = {},
+    },
+
 
 }
 
